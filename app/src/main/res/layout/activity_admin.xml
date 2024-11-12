@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Admin Dashboard Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/adminToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Admin Dashboard"
+            app:titleTextColor="@android:color/white" />
+
+        <!-- Card View for Adding Product Info -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Product Name Input -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Name"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:paddingBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/productNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Product Name"
+                    android:inputType="textPersonName"
+                    android:padding="12dp"
+                    android:background="@android:color/white" />
+
+                <!-- Product Price Input -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Price (₹)"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/productPriceEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Product Price"
+                    android:inputType="numberDecimal"
+                    android:padding="12dp"
+                    android:background="@android:color/white" />
+
+                <!-- Product Description Input -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Description"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/productDescriptionEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Product Description"
+                    android:inputType="textMultiLine"
+                    android:padding="12dp"
+                    android:background="@android:color/white"
+                    android:minHeight="100dp" />
+
+                <!-- Manufacture Date Input -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manufacture Date"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/manufactureDateEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Manufacture Date (YYYY-MM-DD)"
+                    android:inputType="date"
+                    android:padding="12dp"
+                    android:background="@android:color/white" />
+
+                <!-- Expiry Date Input -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Expiry Date"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/expiryDateEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Expiry Date (YYYY-MM-DD)"
+                    android:inputType="date"
+                    android:padding="12dp"
+                    android:background="@android:color/white" />
+
+                <!-- Product Type RadioGroup -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Type"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp" />
+
+                <RadioGroup
+                    android:id="@+id/productTypeGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- RadioButton for Pills -->
+                    <RadioButton
+                        android:id="@+id/pillsRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pills"
+                        android:textColor="#000"
+                        android:layout_marginEnd="16dp" />
+
+                    <!-- RadioButton for Syrup -->
+                    <RadioButton
+                        android:id="@+id/syrupRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Syrup"
+                        android:textColor="#000"
+                        android:layout_marginEnd="16dp" />
+
+                    <!-- RadioButton for Medical Care -->
+                    <RadioButton
+                        android:id="@+id/medicalCareRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Medical Care"
+                        android:textColor="#000" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Add Product Button -->
+        <Button
+            android:id="@+id/addProductButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Product"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/colorPrimary"
+            android:textColor="@android:color/white"
+            android:padding="12dp" />
+
+        <!-- Back Button at the bottom -->
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:background="?attr/colorPrimary"
+            android:textColor="@android:color/white"
+            android:padding="8dp" />
+
+    </LinearLayout>
+</ScrollView>

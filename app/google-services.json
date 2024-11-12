@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "650211136350",
+    "project_id": "projectmedbill",
+    "storage_bucket": "projectmedbill.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650211136350:android:7eaef638d9ad49255b35cf",
+        "android_client_info": {
+          "package_name": "com.example.projectmedbill"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuWw23kab9F81cz5L4i94poXtShG8pxSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

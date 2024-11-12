@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="ProductItem">
+        <attr name="productName" format="string"/>
+        <attr name="productPrice" format="string"/>
+        <attr name="productImage" format="reference"/>
+        <attr name="onClickAddToCart" format="string"/>
+    </declare-styleable>
+</resources>

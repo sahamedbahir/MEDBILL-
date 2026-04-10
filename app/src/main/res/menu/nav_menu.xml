@@ -18,9 +18,9 @@
             android:title="My cart"/>
 
         <item
-            android:id="@+id/nav_bill"
-            android:icon="@drawable/nav_bill"
-            android:title="My Bill"/>
+            android:id="@+id/nav_Terms"
+            android:icon="@drawable/nav_terms"
+            android:title="Terms and Condition"/>
 
         <item
             android:id="@+id/nav_about"

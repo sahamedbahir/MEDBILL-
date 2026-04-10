@@ -35,14 +35,27 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    // Add the packagingOptions block here to exclude the conflicting NOTICE.md files
+    packagingOptions {
+        exclude("META-INF/NOTICE.md")
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/LICENSE")
+    }
 }
 
 dependencies {
     implementation(libs.material.v190) // Material Components
-    // Ensure you have this defined in your libs.versions.toml
     implementation("androidx.recyclerview:recyclerview:1.3.1")
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation(libs.itext7.core)
+    implementation(libs.android.mail)
+    implementation(libs.android.activation)
+    implementation (libs.appcompat ) // Use the latest version
+    implementation (libs.android.mail.v161)
+    implementation (libs.android.activation.v161)
+
 
 
     implementation(libs.appcompat.v170) // AndroidX AppCompat library
@@ -54,7 +67,6 @@ dependencies {
     implementation(libs.activity) // AndroidX Activity KTX
     implementation("com.github.bumptech.glide:glide:4.15.0") // Latest Glide version
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.0") // Glide compiler
-
 
     // Testing dependencies
     testImplementation(libs.junit) // JUnit for local unit testing

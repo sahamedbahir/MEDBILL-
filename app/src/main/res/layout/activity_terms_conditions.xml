@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Toolbar with Custom Back Arrow -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp">
+
+        <!-- Back Arrow Icon -->
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:layout_gravity="start|center_vertical" />
+
+        <!-- Centered Title of Activity -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terms and Conditions"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="16dp"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Terms and Conditions Content -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Terms and Conditions"
+                android:textSize="24sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingBottom="12dp" />
+
+            <!-- The full terms and conditions text, no limit on lines -->
+            <TextView
+                android:id="@+id/terms_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8dp"
+                android:padding="16dp"
+                android:scrollbars="vertical"
+                android:text="1. By using this app, you agree to abide by the rules and regulations set forth by the administrators.\n\n
+2. The app reserves the right to modify, update, or discontinue features at any time.\n\n
+3. Users are responsible for the accuracy of the information they provide while using the app.\n\n
+4. The app is not liable for any damages caused by the use of its features.\n\n
+5. All purchases made through the app are subject to the app's refund policy."
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Accept and Decline Buttons at the Bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
+
+        <!-- Decline Button -->
+        <Button
+            android:id="@+id/decline_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decline"
+            android:textColor="#FF0000"
+            android:background="?android:attr/selectableItemBackground" />
+
+        <!-- Accept Button -->
+        <Button
+            android:id="@+id/accept_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:textColor="#00FF00"
+            android:layout_marginStart="20dp"
+            android:background="?android:attr/selectableItemBackground" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -53,36 +53,51 @@
                     android:id="@+id/pillsbtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Pills" />
+                    android:text="Pills"
+                    android:layout_marginTop="8dp" />
 
                 <Button
                     android:id="@+id/syrupbtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Syrup" />
+                    android:text="Syrup"
+                    android:layout_marginTop="8dp" />
 
                 <Button
                     android:id="@+id/medicalcarebtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Medical Care" />
+                    android:text="Medical Care"
+                    android:layout_marginTop="8dp" />
 
                 <Button
                     android:id="@+id/cartbtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="View Cart" />
+                    android:text="View Cart"
+                    android:layout_marginTop="8dp" />
+
+                <!-- Generate PDF Button Positioned Directly Below the Cart Button -->
+                <Button
+                    android:id="@+id/generatePdfBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Generate PDF"
+                    android:layout_marginTop="8dp" />
+
             </LinearLayout>
 
+            <!-- Image Positioned in Bottom-Right -->
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="208dp"
                 android:layout_height="271dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="100dp"
-                android:layout_marginBottom="99dp"
+                android:layout_marginEnd="99dp"
+                android:layout_marginBottom="50dp"
                 app:srcCompat="@drawable/medbill" />
+
         </RelativeLayout>
     </LinearLayout>
 
@@ -95,16 +110,6 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu">
 
-        <!-- Sidebar Header -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#D3D3D3"
-            android:padding="16dp">
-
-
-        </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -4,10 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +22,7 @@ import java.util.Map;
 public class SignupActivity extends AppCompatActivity {
 
     private EditText signUpEmail, signUpPassword;
-    private RadioGroup roleGroup;
+    private Spinner roleSpinner;
     private Button signUpButton;
     private TextView loginRedirectText;
 
@@ -36,12 +36,17 @@ public class SignupActivity extends AppCompatActivity {
 
         signUpEmail = findViewById(R.id.signup_email);
         signUpPassword = findViewById(R.id.signup_password);
-        roleGroup = findViewById(R.id.radioGroupRole);
+        roleSpinner = findViewById(R.id.spinnerRole);
         signUpButton = findViewById(R.id.signup_button);
         loginRedirectText = findViewById(R.id.loginRedirectText);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("Users");
+
+        // Setting up the role spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.roles, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        roleSpinner.setAdapter(adapter);
 
         signUpButton.setOnClickListener(v -> registerUser());
 
@@ -54,15 +59,7 @@ public class SignupActivity extends AppCompatActivity {
     private void registerUser() {
         String email = signUpEmail.getText().toString().trim();
         String password = signUpPassword.getText().toString().trim();
-
-        // Get selected role from RadioGroup
-        int selectedRoleId = roleGroup.getCheckedRadioButtonId();
-        if (selectedRoleId == -1) {
-            Toast.makeText(SignupActivity.this, "Please select a role", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        RadioButton selectedRoleButton = findViewById(selectedRoleId);
-        String role = selectedRoleButton.getText().toString();
+        String role = roleSpinner.getSelectedItem().toString();
 
         if (TextUtils.isEmpty(email)) {
             signUpEmail.setError("Email is required");
@@ -74,14 +71,11 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        // Check if the email is already in use
         auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getSignInMethods().isEmpty()) {
-                    // Email is not in use, create new user
                     createUser(email, password, role);
                 } else {
-                    // Email is already in use
                     Toast.makeText(SignupActivity.this, "Email already registered. Please log in.", Toast.LENGTH_SHORT).show();
                 }
             } else {
@@ -91,7 +85,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void createUser(String email, String password, String role) {
-        // Create user with email and password
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -99,19 +92,15 @@ public class SignupActivity extends AppCompatActivity {
                         if (user != null) {
                             String userId = user.getUid();
 
-                            // Create a map for user details
                             Map<String, Object> userDetails = new HashMap<>();
                             userDetails.put("email", email);
-                            userDetails.put("role", role); // Store the role
+                            userDetails.put("role", role);
 
-                            // Store user details in the database
                             database.child(userId).setValue(userDetails)
                                     .addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
-                                            // Initialize user's cart and bills
                                             initializeUserCartAndBills(userId);
                                             Toast.makeText(SignupActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
-                                            // Redirect to login or main activity
                                             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                             startActivity(intent);
                                             finish();
@@ -127,11 +116,9 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void initializeUserCartAndBills(String userId) {
-        // Initialize cartItems and bills nodes in the database
         DatabaseReference cartRef = database.child(userId).child("cartItems");
         DatabaseReference billsRef = database.child(userId).child("bills");
 
-        // Initialize empty cartItems
         cartRef.setValue(new HashMap<>()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(SignupActivity.this, "Cart initialized.", Toast.LENGTH_SHORT).show();
@@ -140,7 +127,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        // Initialize empty bills
         billsRef.setValue(new HashMap<>()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(SignupActivity.this, "Bills initialized.", Toast.LENGTH_SHORT).show();

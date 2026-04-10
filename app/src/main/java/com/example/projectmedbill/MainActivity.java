@@ -2,25 +2,38 @@ package com.example.projectmedbill;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.MenuItem; // Add this import statement
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
+import java.io.IOException;
+import java.util.List;
+import androidx.annotation.NonNull;
+
+
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
-    private Button pillsButton, syrupButton, medicalCareButton, viewCartButton;
+    private Button pillsButton, syrupButton, medicalCareButton, viewCartButton, generatePdfButton;
     private FirebaseAuth mAuth;
+    private CartManager cartManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
+        cartManager = CartManager.getInstance();
 
         // Toolbar setup
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -55,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         syrupButton.setOnClickListener(v -> openProductList("Syrup"));
         medicalCareButton.setOnClickListener(v -> openProductList("Medical Care"));
         viewCartButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, CartActivity.class)));
+        generatePdfButton.setOnClickListener(v -> generatePDF());
     }
 
     @Override
@@ -74,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         syrupButton = findViewById(R.id.syrupbtn);
         medicalCareButton = findViewById(R.id.medicalcarebtn);
         viewCartButton = findViewById(R.id.cartbtn);
+        generatePdfButton = findViewById(R.id.generatePdfBtn); // Add this line for the generate PDF button
     }
 
     private void setUserInfoInNavigationHeader(NavigationView navigationView) {
@@ -118,11 +134,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_cart) {
             Intent intent = new Intent(MainActivity.this, CartActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_bill) {
-            Intent intent = new Intent(MainActivity.this, BillActivity.class);
+        } else if (id == R.id.nav_Terms) {
+            Intent intent = new Intent(MainActivity.this, TermsandconditionsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
-            // Corrected the indentation here
             Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
@@ -133,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -141,5 +155,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    // Generate PDF when the button is clicked
+    private void generatePDF() {
+        // Load cart items from Firebase
+        cartManager.loadCartFromFirebase(new CartManager.CartLoadCallback() {
+            @Override
+            public void onCartLoaded(List<CartItem> loadedCartItems) {
+                // File path for PDF
+                String fileName = getExternalFilesDir(null) + "/Bill.pdf";
+
+                // Create a PdfWriter object
+                try {
+                    PdfWriter writer = new PdfWriter(fileName);
+                    PdfDocument pdf = new PdfDocument(writer);
+                    Document document = new Document(pdf);
+
+                    // Add content to the PDF
+                    document.add(new Paragraph("Bill for Order"));
+                    document.add(new Paragraph("Date: " + System.currentTimeMillis()));
+
+                    // Loop through the cart items and add to the PDF
+                    double totalAmount = 0.0;
+                    for (CartItem item : loadedCartItems) {
+                        document.add(new Paragraph(item.getName() + " - ₹" + item.getTotalPrice()));
+
+                        totalAmount += item.getTotalPrice();
+                    }
+
+                    // Add total
+                    document.add(new Paragraph("Total: ₹" + totalAmount));
+
+                    // Close the document
+                    document.close();
+
+                    Toast.makeText(MainActivity.this, "PDF Generated at " + fileName, Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Failed to generate PDF", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCartLoadFailed(Exception e) {
+                Toast.makeText(MainActivity.this, "Failed to load cart items", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

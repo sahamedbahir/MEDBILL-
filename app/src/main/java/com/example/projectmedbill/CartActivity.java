@@ -2,9 +2,11 @@ package com.example.projectmedbill;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +24,8 @@ public class CartActivity extends AppCompatActivity {
     private List<CartItem> cartItems;
     private FirebaseAuth mAuth;
     private CartManager cartManager;
-    private ImageView backButton;  // Back button ImageView
+    private ImageView backButton;
+    private ProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,8 @@ public class CartActivity extends AppCompatActivity {
         cartListView = findViewById(R.id.cartListView);
         totalTextView = findViewById(R.id.totalTextView);
         generateBillButton = findViewById(R.id.generateBillButton);
-        backButton = findViewById(R.id.backButton);  // Find back button by ID
+        backButton = findViewById(R.id.backButton);
+        loadingProgressBar = findViewById(R.id.loadingProgressBar);
 
         cartItems = new ArrayList<>();
         cartManager = CartManager.getInstance();
@@ -49,7 +53,7 @@ public class CartActivity extends AppCompatActivity {
         generateBillButton.setOnClickListener(v -> {
             if (!cartItems.isEmpty()) {
                 Intent intent = new Intent(CartActivity.this, BillActivity.class);
-                intent.putExtra("cartItems", (ArrayList<CartItem>) cartItems); // Passing the cart items to BillActivity
+                intent.putExtra("cartItems", (ArrayList<CartItem>) cartItems);
                 startActivity(intent);
             } else {
                 Toast.makeText(CartActivity.this, "Cart is empty. Cannot generate bill.", Toast.LENGTH_SHORT).show();
@@ -60,19 +64,22 @@ public class CartActivity extends AppCompatActivity {
     private void loadCartItems() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+            loadingProgressBar.setVisibility(View.VISIBLE);  // Show the loading indicator
             cartManager.loadCartFromFirebase(new CartManager.CartLoadCallback() {
                 @Override
                 public void onCartLoaded(List<CartItem> loadedCartItems) {
-                    cartItems.clear(); // Clear existing items before adding new ones
+                    loadingProgressBar.setVisibility(View.GONE);  // Hide the loading indicator
+                    cartItems.clear();
                     cartItems.addAll(loadedCartItems);
-                    updateCartDisplay(); // Update display to reflect new cart items
+                    updateCartDisplay();
                 }
 
                 @Override
                 public void onCartLoadFailed(Exception e) {
+                    loadingProgressBar.setVisibility(View.GONE);  // Hide the loading indicator
                     Toast.makeText(CartActivity.this, "Failed to load cart: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    cartItems.clear(); // Clear the cart items on load failure
-                    updateCartDisplay(); // Update display to reflect the empty cart
+                    cartItems.clear();
+                    updateCartDisplay();
                 }
             });
         } else {
@@ -85,18 +92,38 @@ public class CartActivity extends AppCompatActivity {
         if (cartItems.isEmpty()) {
             Toast.makeText(this, "Your cart is empty.", Toast.LENGTH_SHORT).show();
             totalTextView.setText("Total: ₹0.00");
-            cartListView.setAdapter(null); // Clear adapter if empty
+            cartListView.setAdapter(null);
         } else {
-            // Initialize the adapter only once
             if (cartAdapter == null) {
-                cartAdapter = new CartAdapter(this, cartItems);
+                cartAdapter = new CartAdapter(this, cartItems, new CartAdapter.DeleteItemListener() {
+                    @Override
+                    public void onItemDeleted(CartItem item) {
+                        deleteItemFromCart(item);
+                    }
+                });
                 cartListView.setAdapter(cartAdapter);
             } else {
-                cartAdapter.updateCartItems(cartItems); // Update the existing adapter with new items
+                cartAdapter.updateCartItems(cartItems);
             }
 
-            double totalAmount = cartManager.calculateTotal(cartItems); // Calculate total amount using CartManager
+            double totalAmount = cartManager.calculateTotal(cartItems);
             totalTextView.setText("Total: ₹" + String.format("%.2f", totalAmount));
         }
+    }
+
+    private void deleteItemFromCart(CartItem item) {
+        cartManager.removeItemFromCart(item, new CartManager.CartUpdateCallback() {
+            @Override
+            public void onCartUpdated() {
+                cartItems.remove(item);
+                updateCartDisplay();
+                Toast.makeText(CartActivity.this, "Item removed from cart", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCartUpdateFailed(Exception e) {
+                Toast.makeText(CartActivity.this, "Failed to remove item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

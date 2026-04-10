@@ -4,11 +4,25 @@
     <string name="close_nav">Close Navigation Drawer</string>
     <string name="quantity_label">Quantity: %1$d</string>
 
-
     <string-array name="roles">
         <item>Admin</item>
         <item>Customer</item>
     </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Terms and Conditions -->
+    <string name="terms_condition_1">By using this app, you agree to our Terms of Service.</string>
+    <string name="terms_condition_2">You must be at least 18 years old to use the app.</string>
+    <string name="terms_condition_3">We reserve the right to change our Terms and Conditions at any time.</string>
+    <string name="terms_condition_4">Your personal data will be handled according to our Privacy Policy.</string>
+    <string name="terms_condition_5">By using the cart feature, you agree to the payment terms provided on checkout.</string>
+
+    <!-- Add missing strings -->
+
+    <string name="terms_conditions_text">Terms and Conditions</string>
+    <string name="back">Back</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
 </resources>

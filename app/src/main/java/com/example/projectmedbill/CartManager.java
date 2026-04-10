@@ -5,6 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,9 +67,30 @@ public class CartManager {
         return total;
     }
 
+    // Method to remove an item from the cart in Firebase
+    public void removeItemFromCart(CartItem cartItem, CartUpdateCallback callback) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            cartRef.child(currentUser.getUid()).child(cartItem.getId()).removeValue()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            callback.onCartUpdated(); // Notify that the cart was updated
+                        } else {
+                            callback.onCartUpdateFailed(task.getException());
+                        }
+                    });
+        }
+    }
+
     // Interface to handle the callback for loading cart items
     public interface CartLoadCallback {
         void onCartLoaded(List<CartItem> loadedCartItems);
         void onCartLoadFailed(Exception e);
+    }
+
+    // Interface to handle the callback for cart updates (e.g., after deleting an item)
+    public interface CartUpdateCallback {
+        void onCartUpdated();  // Called when cart is successfully updated (item removed)
+        void onCartUpdateFailed(Exception e);  // Called when cart update fails
     }
 }

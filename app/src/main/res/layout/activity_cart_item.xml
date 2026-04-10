@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Product Name -->
     <TextView
         android:id="@+id/productName"
         android:layout_width="wrap_content"
@@ -12,27 +13,49 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <!-- Product Price -->
     <TextView
         android:id="@+id/productPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 
+    <!-- Product Quantity -->
     <TextView
         android:id="@+id/productQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 
+    <!-- Product Description -->
     <TextView
         android:id="@+id/productDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp" />
 
+    <!-- Product Expiry Date -->
     <TextView
         android:id="@+id/productExpiryDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp" />
+
+    <!-- Product Manufacture Date -->
+    <TextView
+        android:id="@+id/productManufactureDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp" />  <!-- Default text -->
+
+    <!-- Delete Button -->
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:textColor="#fff"
+        android:background="#FF0000"
+        android:padding="8dp"
+        android:layout_marginTop="16dp" />
 </LinearLayout>
